@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -58,11 +58,31 @@ const Home = () => {
     );
   };
 
+  const addToCart = async (index) => {
+    try {
+      await fetch("http://localhost:3000/shop/add-product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product: products[index],
+          index,
+        }),
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      alert("Can't edit product");
+    }
+  };
+
   return (
     <Container className="mt-2">
       <Row xs={1} md={4} sm={2} lg={6} className="g-4">
         {loading ? (
-          <h1>Loading...</h1>
+          <Spinner animation="border" />
         ) : products.length < 1 ? (
           <h1>No Products Available!</h1>
         ) : (
@@ -100,7 +120,7 @@ const Home = () => {
                     {description}
                   </Card.Text>
 
-                  <Row>
+                  <Row className="g-3">
                     <Col>
                       <Button
                         variant="success"
@@ -115,6 +135,14 @@ const Home = () => {
                         onClick={() => deleteProduct(index)}
                       >
                         Delete
+                      </Button>
+                    </Col>
+                    <Col>
+                      <Button
+                        variant="warning"
+                        onClick={() => addToCart(index)}
+                      >
+                        Add To Cart
                       </Button>
                     </Col>
                   </Row>
