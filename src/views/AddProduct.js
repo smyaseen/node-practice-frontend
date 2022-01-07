@@ -8,7 +8,7 @@ const AddProduct = () => {
     title: "",
     price: 0,
     description: "",
-    image: "",
+    imageUrl: "",
   });
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const navigate = useNavigate();
@@ -61,7 +61,9 @@ const AddProduct = () => {
           <Form.Control
             type="text"
             placeholder="Enter Image URL"
-            onChange={(e) => setProduct({ ...product, image: e.target.value })}
+            onChange={(e) =>
+              setProduct({ ...product, imageUrl: e.target.value })
+            }
           />
         </Form.Group>
 

@@ -16,6 +16,9 @@ const Navigation = () => {
           <Nav.Link as={Link} to="/cart">
             Cart
           </Nav.Link>
+          <Nav.Link as={Link} to="/orders">
+            Orders
+          </Nav.Link>
         </Nav>
       </Container>
     </Navbar>

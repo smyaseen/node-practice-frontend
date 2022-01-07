@@ -23,7 +23,7 @@ const Home = () => {
     })();
   }, []);
 
-  const deleteProduct = async (index) => {
+  const deleteProduct = async (index, id) => {
     setLoading(true);
     try {
       await fetch("http://localhost:3000/admin/delete-product", {
@@ -31,7 +31,7 @@ const Home = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ index }),
+        body: JSON.stringify({ id }),
       });
 
       products.splice(index, 1);
@@ -42,12 +42,12 @@ const Home = () => {
     setLoading(false);
   };
 
-  const editProduct = (index) => {
+  const editProduct = (index, id) => {
     navigate(
       {
         pathname: "/edit-product",
         search: `?${createSearchParams({
-          idx: index,
+          id: id,
         })}`,
       },
       {
@@ -58,7 +58,7 @@ const Home = () => {
     );
   };
 
-  const addToCart = async (index) => {
+  const addToCart = async (index, id) => {
     try {
       await fetch("http://localhost:3000/shop/add-product", {
         method: "POST",
@@ -66,8 +66,7 @@ const Home = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          product: products[index],
-          index,
+          id,
         }),
       });
 
@@ -86,7 +85,7 @@ const Home = () => {
         ) : products.length < 1 ? (
           <h1>No Products Available!</h1>
         ) : (
-          products.map(({ title, price, image, description, id }, index) => (
+          products.map(({ title, price, imageUrl, description, id }, index) => (
             <Col
               style={{
                 minHeight: "50px",
@@ -94,10 +93,15 @@ const Home = () => {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
               }}
-              key={index}
+              key={id}
             >
               <Card>
-                <Card.Img variant="top" src={image} width={150} height={150} />
+                <Card.Img
+                  variant="top"
+                  src={imageUrl}
+                  width={150}
+                  height={150}
+                />
                 <Card.Body>
                   <Card.Title
                     style={{
@@ -124,7 +128,7 @@ const Home = () => {
                     <Col>
                       <Button
                         variant="success"
-                        onClick={() => editProduct(index)}
+                        onClick={() => editProduct(index, id)}
                       >
                         Edit
                       </Button>
@@ -132,7 +136,7 @@ const Home = () => {
                     <Col>
                       <Button
                         variant="danger"
-                        onClick={() => deleteProduct(index)}
+                        onClick={() => deleteProduct(index, id)}
                       >
                         Delete
                       </Button>
@@ -140,7 +144,7 @@ const Home = () => {
                     <Col>
                       <Button
                         variant="warning"
-                        onClick={() => addToCart(index)}
+                        onClick={() => addToCart(index, id)}
                       >
                         Add To Cart
                       </Button>

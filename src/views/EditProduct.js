@@ -8,7 +8,7 @@ const EditProduct = () => {
     title: "",
     price: 0,
     description: "",
-    image: "",
+    imageUrl: "",
   });
 
   const {
@@ -34,7 +34,7 @@ const EditProduct = () => {
         },
         body: JSON.stringify({
           product: editedProduct,
-          index: window.location.search.split("=")[1],
+          id: window.location.search.split("=")[1],
         }),
       });
 
@@ -79,9 +79,9 @@ const EditProduct = () => {
             type="text"
             placeholder="Enter Image URL"
             onChange={(e) =>
-              setEditedProduct({ ...product, image: e.target.value })
+              setEditedProduct({ ...product, imageUrl: e.target.value })
             }
-            value={editedProduct.image}
+            value={editedProduct.imageUrl}
           />
         </Form.Group>
 

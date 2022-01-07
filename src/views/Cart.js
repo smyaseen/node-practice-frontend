@@ -19,8 +19,8 @@ const Cart = () => {
         let quantity = 0;
 
         res.map((product) => {
-          price += product.price * product.quantity;
-          quantity += product.quantity;
+          price += product.price * product.cartItem.quantity;
+          quantity += product.cartItem.quantity;
           return product;
         });
 
@@ -35,7 +35,7 @@ const Cart = () => {
     })();
   }, []);
 
-  const deleteProduct = async (index) => {
+  const deleteProduct = async (index, id) => {
     setLoading(true);
     try {
       await fetch("http://localhost:3000/shop/delete-product", {
@@ -43,7 +43,7 @@ const Cart = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ index }),
+        body: JSON.stringify({ id }),
       });
 
       products.splice(index, 1);
@@ -57,7 +57,7 @@ const Cart = () => {
   const checkout = async () => {
     setLoading(true);
     try {
-      await fetch("http://localhost:3000/shop/clear-cart", {
+      await fetch("http://localhost:3000/shop/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,17 @@ const Cart = () => {
           <br />
           <Row xs={1} md={4} sm={2} lg={6} className="g-4">
             {products.map(
-              ({ title, price, image, description, id, quantity }, index) => (
+              (
+                {
+                  title,
+                  price,
+                  imageUrl,
+                  description,
+                  id,
+                  cartItem: { quantity },
+                },
+                index
+              ) => (
                 <Col
                   style={{
                     minHeight: "50px",
@@ -104,7 +114,7 @@ const Cart = () => {
                   <Card>
                     <Card.Img
                       variant="top"
-                      src={image}
+                      src={imageUrl}
                       width={150}
                       height={150}
                     />
@@ -136,7 +146,7 @@ const Cart = () => {
                       <Row className="g-1">
                         <Button
                           variant="danger"
-                          onClick={() => deleteProduct(index)}
+                          onClick={() => deleteProduct(index, id)}
                         >
                           Delete
                         </Button>
