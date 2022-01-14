@@ -23,7 +23,7 @@ const Home = () => {
     })();
   }, []);
 
-  const deleteProduct = async (index, id) => {
+  const deleteProduct = async (index, _id) => {
     setLoading(true);
     try {
       await fetch("http://localhost:3000/admin/delete-product", {
@@ -31,7 +31,7 @@ const Home = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ _id }),
       });
 
       products.splice(index, 1);
@@ -42,12 +42,12 @@ const Home = () => {
     setLoading(false);
   };
 
-  const editProduct = (index, id) => {
+  const editProduct = (index, _id) => {
     navigate(
       {
         pathname: "/edit-product",
         search: `?${createSearchParams({
-          id: id,
+          _id,
         })}`,
       },
       {
@@ -58,7 +58,7 @@ const Home = () => {
     );
   };
 
-  const addToCart = async (index, id) => {
+  const addToCart = async (index, _id) => {
     try {
       await fetch("http://localhost:3000/shop/add-product", {
         method: "POST",
@@ -66,7 +66,7 @@ const Home = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id,
+          _id,
         }),
       });
 
@@ -85,75 +85,77 @@ const Home = () => {
         ) : products.length < 1 ? (
           <h1>No Products Available!</h1>
         ) : (
-          products.map(({ title, price, imageUrl, description, id }, index) => (
-            <Col
-              style={{
-                minHeight: "50px",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-              }}
-              key={id}
-            >
-              <Card>
-                <Card.Img
-                  variant="top"
-                  src={imageUrl}
-                  width={150}
-                  height={150}
-                />
-                <Card.Body>
-                  <Card.Title
-                    style={{
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {title}
-                    <br />
-                    {price}$
-                  </Card.Title>
-                  <Card.Text
-                    style={{
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    {description}
-                  </Card.Text>
+          products.map(
+            ({ title, price, imageUrl, description, _id }, index) => (
+              <Col
+                style={{
+                  minHeight: "50px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                }}
+                key={_id}
+              >
+                <Card>
+                  <Card.Img
+                    variant="top"
+                    src={imageUrl}
+                    width={150}
+                    height={150}
+                  />
+                  <Card.Body>
+                    <Card.Title
+                      style={{
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {title}
+                      <br />
+                      {price}$
+                    </Card.Title>
+                    <Card.Text
+                      style={{
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {description}
+                    </Card.Text>
 
-                  <Row className="g-3">
-                    <Col>
-                      <Button
-                        variant="success"
-                        onClick={() => editProduct(index, id)}
-                      >
-                        Edit
-                      </Button>
-                    </Col>
-                    <Col>
-                      <Button
-                        variant="danger"
-                        onClick={() => deleteProduct(index, id)}
-                      >
-                        Delete
-                      </Button>
-                    </Col>
-                    <Col>
-                      <Button
-                        variant="warning"
-                        onClick={() => addToCart(index, id)}
-                      >
-                        Add To Cart
-                      </Button>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))
+                    <Row className="g-3">
+                      <Col>
+                        <Button
+                          variant="success"
+                          onClick={() => editProduct(index, _id)}
+                        >
+                          Edit
+                        </Button>
+                      </Col>
+                      <Col>
+                        <Button
+                          variant="danger"
+                          onClick={() => deleteProduct(index, _id)}
+                        >
+                          Delete
+                        </Button>
+                      </Col>
+                      <Col>
+                        <Button
+                          variant="warning"
+                          onClick={() => addToCart(index, _id)}
+                        >
+                          Add To Cart
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Card.Body>
+                </Card>
+              </Col>
+            )
+          )
         )}
       </Row>
     </Container>

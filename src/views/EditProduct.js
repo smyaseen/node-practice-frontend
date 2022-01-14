@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const EditProduct = () => {
   const [editedProduct, setEditedProduct] = useState({
-    id: 1,
+    _id: 1,
     title: "",
     price: 0,
     description: "",
@@ -34,7 +34,7 @@ const EditProduct = () => {
         },
         body: JSON.stringify({
           product: editedProduct,
-          id: window.location.search.split("=")[1],
+          _id: window.location.search.split("=")[1],
         }),
       });
 
