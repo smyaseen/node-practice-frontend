@@ -19,8 +19,8 @@ const Cart = () => {
         let quantity = 0;
 
         res.map((product) => {
-          price += product.price * product.cartItem.quantity;
-          quantity += product.cartItem.quantity;
+          price += product.price * product.quantity;
+          quantity += product.quantity;
           return product;
         });
 
@@ -92,14 +92,7 @@ const Cart = () => {
           <Row xs={1} md={4} sm={2} lg={6} className="g-4">
             {products.map(
               (
-                {
-                  title,
-                  price,
-                  imageUrl,
-                  description,
-                  id,
-                  cartItem: { quantity },
-                },
+                { title, price, imageUrl, description, id, quantity },
                 index
               ) => (
                 <Col
